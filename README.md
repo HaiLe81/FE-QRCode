@@ -69,3 +69,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### BE-QRCode
 
 this is source BE-QRCode: https://github.com/HaiLe81/BE-QRCode
+
+### Link Demo
+[QRCode](https://qrcode-66c0e.web.app)
+Using:
+  + Reactjs
+  + React-router
+  + ant design
