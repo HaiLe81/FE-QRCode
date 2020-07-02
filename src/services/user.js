@@ -83,13 +83,14 @@ const editUser = async ({ id, username, fullname }) => {
   }
 };
 
-const changePassword = async ({ id, password }) => {
+const changePassword = async ({ id, password, oldPassword }) => {
   try {
     const res = await axios({
       method: "put",
       url: route + `/${id}`,
       data: {
-        password
+        password,
+        oldPassword
       },
     });
     const { message } = res.data;

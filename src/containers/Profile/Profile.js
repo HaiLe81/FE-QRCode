@@ -81,17 +81,29 @@ function Profile() {
     setIsValidFormPassword(true);
   };
   const onFinishChangePassword = (values) => {
-    const a = CookieService.getCookie(globals.env.COOKIE_KEY);
-    console.log("a", a);
+    const confirmPassword = (oldPassword, password, confirmPassword) => {
+      if(oldPassword === password){
+        message.error('The new password must not be the same as the old password!')
+        return
+      }
+      if(password !== confirmPassword){
+        message.error('The password confirmation does not match!')
+        return
+      }
+    }
+    confirmPassword(values.oldPassword ,values.password, values.confirmPassword)
     values.id = store.user._id;
     setLoadingPassword(true);
-    console.log(values);
     UserService.changePassword(values).then((res) => {
-      console.log("res", res);
       setLoadingPassword(false);
       setIsValidForm(true);
       message.success(res.message);
-    });
+    })
+    .catch((error) => {
+      message.error(error.message)
+      setLoadingPassword(false);
+    })
+    
   };
   return (
     <div>
@@ -171,15 +183,37 @@ function Profile() {
                 onFinishFailed={onFinishChangePasswordFailed}
               >
                 <Form.Item
-                  label="Change Password"
-                  name="password"
+                  label="Old Password"
+                  name="oldPassword"
                   rules={[
-                    { required: true, message: "Please input your password!" },
+                    { required: true, message: "Please input your old password!" },
+                    { min: 6, message: "Password must be minimun 6 characters." }
                   ]}
                 >
                   <Input.Password />
                 </Form.Item>
 
+                <Form.Item
+                  label="New Password"
+                  name="password"
+                  rules={[
+                    { required: true, message: "Please input your password!" },
+                    { min: 6, message: "Password must be minimun 6 characters." }
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+
+                <Form.Item
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  rules={[
+                    { required: true, message: "Please input your password!" },
+                    { min: 6, message: "Password must be minimun 6 characters." }
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
                 {
                   <Form.Item {...tailLayout}>
                     <Button
